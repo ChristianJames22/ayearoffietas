@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Year of Fiestas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+
+<body>
+  <div id="wrapper">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="#home" id="logoLink" onclick="loadPage('home'); return false;">
+          <img src="images/fistivallogo.png" alt="Logo" />
+          <span>A Year of Fiestas</span>
+        </a>
+      </div>
+      <button class="hamburger" onclick="toggleMobileNav()">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#home" id="homeLink" onclick="loadPage('home'); return false;">Home</a>
+        <a href="#about" id="aboutLink" onclick="loadPage('about'); return false;">About</a>
+        <a href="#contact" id="contactLink" onclick="loadPage('contact'); return false;">Contact</a>
+        <div class="dropdown" id="festivalDropdown">
+          <button class="dropbtn" id="festivalsBtn" onclick="toggleDropdown()">Festivals ▾</button>
+          <div class="dropdown-content" id="festivalLinks">
+            <a href="#festivals" onclick="loadPage('festivals'); return false;">All Festivals</a>
+            <strong>January</strong>
+            <a href="#sinulog" onclick="loadPage('sinulog'); return false;">Sinulog Festival</a>
+            <a href="#atiatihan" onclick="loadPage('atiatihan'); return false;">Ati-Atihan Festival</a>
+            <a href="#dinagyang" onclick="loadPage('dinagyang'); return false;">Dinagyang Festival</a>
+            <a href="#blacknazarene" onclick="loadPage('blacknazarene'); return false;">Black Nazarene</a>
+
+            <strong>February</strong>
+            <a href="#panagbenga" onclick="loadPage('panagbenga'); return false;">Panagbenga Festival</a>
+            <a href="#hotair" onclick="loadPage('hotair'); return false;">Hot Air Balloon</a>
+
+            <strong>March</strong>
+            <a href="#kaamulan" onclick="loadPage('kaamulan'); return false;">Kaamulan Festival</a>
+
+            <strong>April</strong>
+            <a href="#moriones" onclick="loadPage('moriones'); return false;">Moriones Festival</a>
+            <a href="#aliwan" onclick="loadPage('aliwan'); return false;">Aliwan Fiesta</a>
+
+            <strong>May</strong>
+            <a href="#pahiyas" onclick="loadPage('pahiyas'); return false;">Pahiyas Festival</a>
+            <a href="#obando" onclick="loadPage('obando'); return false;">Obando Rites</a>
+
+            <strong>June</strong>
+            <a href="#lechon" onclick="loadPage('lechon'); return false;">Parada ng Lechon</a>
+            <a href="#pintados" onclick="loadPage('pintados'); return false;">Pintados</a>
+
+            <strong>August</strong>
+            <a href="#kadayawan" onclick="loadPage('kadayawan'); return false;">Kadayawan Festival</a>
+
+            <strong>October</strong>
+            <a href="#masskara" onclick="loadPage('masskara'); return false;">MassKara Festival</a>
+            <a href="#lanzones" onclick="loadPage('lanzones'); return false;">Lanzones Festival</a>
+
+            <strong>December</strong>
+            <a href="#giantlantern" onclick="loadPage('giantlantern'); return false;">Giant Lantern Festival</a>
+            <a href="#sinukwan" onclick="loadPage('sinukwan'); return false;">Sinukwan Festival</a>
+          </div>
+        </div>
+
+        <a href="login.html" class="login-icon">
+          <i class="fa fa-user"></i> Login
+        </a>
+      </div>
+    </nav>
+
+    <!-- Dynamic Content Here -->
+    <div id="content">Loading...</div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="#home" onclick="loadPage('home'); return false;">Home</a>
+        <a href="#about" onclick="loadPage('about'); return false;">About</a>
+        <a href="#festivals" onclick="loadPage('festivals'); return false;">Festivals</a>
+        <a href="#contact" onclick="loadPage('contact'); return false;">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+
+      <div class="socials">
+        <a href="https://www.linkedin.com/in/christian-james-caleos-69614431a" target="_blank">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://github.com/ChristianJames22" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.facebook.com/Cjcaleos002" target="_blank">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+
+      <p>&copy; 2025 A Year of Fiestas. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      function loadPage(page, addToHistory = true) {
+        fetch(page + '.html')
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById('content').innerHTML = data;
+            if (addToHistory) {
+              history.pushState({ page: page }, '', '#' + page);
+            }
+            window.scrollTo(0, 0);
+            highlightNav(page);
+          })
+          .catch(() => {
+            document.getElementById('content').innerHTML = '<section class="section"><h2>Page Not Found</h2><p>Sorry, the page you are looking for does not exist.</p></section>';
+            if (addToHistory) {
+              history.pushState({ page: '404' }, '', '#404');
+            }
+            window.scrollTo(0, 0);
+            highlightNav('');
+          });
+
+        document.getElementById('festivalDropdown').classList.remove('active');
+        document.getElementById('navLinks').classList.remove('active');
+      }
+
+      window.onload = () => {
+        const pageFromHash = window.location.hash.replace('#', '') || 'home';
+        loadPage(pageFromHash, false);
+      };
+
+      window.onpopstate = () => {
+        const page = window.location.hash.replace('#', '') || 'home';
+        loadPage(page, false);
+      };
+
+      function toggleDropdown() {
+        document.getElementById('festivalDropdown').classList.toggle('active');
+      }
+
+      function toggleMobileNav() {
+        document.getElementById('navLinks').classList.toggle('active');
+      }
+
+      function highlightNav(page) {
+        document.querySelectorAll('.nav-links a, .dropbtn, .dropdown-content a, .logo a').forEach(link => {
+          link.classList.remove('active');
+        });
+
+        if (page === 'home') {
+          document.getElementById('homeLink').classList.add('active');
+          document.getElementById('logoLink').classList.add('active');
+        } else if (page === 'about') {
+          document.getElementById('aboutLink').classList.add('active');
+        } else if (page === 'contact') {
+          document.getElementById('contactLink').classList.add('active');
+        } else {
+          document.getElementById('festivalsBtn').classList.add('active');
+          document.querySelectorAll('.dropdown-content a').forEach(link => {
+            if (link.getAttribute('href') === '#' + page) {
+              link.classList.add('active');
+            }
+          });
+        }
+      }
+
+      // ✅ Bring Back HIDE/SHOW Navbar on Scroll
+      let lastScrollTop = 0;
+      const navbar = document.querySelector('.navbar');
+
+      window.addEventListener('scroll', function () {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+          navbar.style.transform = 'translateY(-100%)';
+        } else {
+          navbar.style.transform = 'translateY(0)';
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      });
+    </script>
+  </div>
+</body>
+
+</html>
